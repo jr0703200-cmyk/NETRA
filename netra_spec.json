@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "NETRA",
+  "fullName": "Neural Eye for Threat Recognition and Analysis",
+  "tagline": "An AI-powered surveillance and intelligence platform that turns distributed camera feeds into real-time, searchable and connected situational intelligence.",
+  "version": "1.0.0",
+  "type": "Full-Stack AI Surveillance & Geospatial Intelligence Platform",
+  "classification": "Technical Command-and-Intelligence Platform",
+  "aestheticTheme": {
+    "name": "Graphite & Ivory",
+    "description": "Restrained, professional dark technology command-center environment with subtle glassmorphism and technical HUD accents.",
+    "palette": {
+      "background": "#08090C",
+      "panels": "#17181C",
+      "surfaceGlass": "rgba(255, 255, 255, 0.05)",
+      "surfaceGlassHover": "rgba(255, 255, 255, 0.08)",
+      "border": "rgba(222, 216, 204, 0.12)",
+      "borderActive": "rgba(222, 216, 204, 0.28)",
+      "textPrimary": "#F2EFE8",
+      "textMuted": "#8A8D93",
+      "accentPrimary": "#DED8CC",
+      "accentTechnical": {
+        "cyanTeal": "#00F0FF",
+        "mintSuccess": "#3DDC97",
+        "coolWhite": "#E2E8F0"
+      },
+      "severity": {
+        "critical": "#FF4D5F",
+        "high": "#FF8A4C",
+        "medium": "#F5C451",
+        "low": "#3DDC97"
+      }
+    },
+    "typography": {
+      "primary": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "technicalMonospace": "'JetBrains Mono', 'IBM Plex Mono', monospace"
+    }
+  },
+  "corePhilosophy": {
+    "doctrine": "SEE → IDENTIFY → CONNECT → UNDERSTAND → ALERT → INVESTIGATE",
+    "ruleOfHonesty": "Never fake AI detections or fabricate camera connected states. If AI is offline, display 'AI PROCESSING OFFLINE'. Simulated data must be explicitly branded as '[DEMO MODE]'."
+  },
+  "systemArchitecture": {
+    "workflow": [
+      "CAMERA NETWORK (Wi-Fi / IP / RTSP / ONVIF / Local)",
+      "VIDEO INGESTION (TCP Socket Probing, RTSP handshake, Stream Proxying)",
+      "AI VIDEO PROCESSING (Python FastAPI inference bridge, frame sampling)",
+      "OBJECT & VEHICLE & PERSON DETECTION (YOLO-family models)",
+      "ANPR / OCR (Plate localization & Indian format regex normalization)",
+      "EVENT DETECTION (Restricted zones geofencing, crowd density, loitering)",
+      "WATCHLIST MATCHING (Hotlist queries with 60s cooldown deduplication)",
+      "CROSS-CAMERA TRACKING (Persistent vehicle identity & sequential node re-ID)",
+      "EVENT CORRELATION & REAL-TIME ALERTS (Socket.IO event bus)",
+      "OPERATOR COMMAND DASHBOARD (Live Monitor, Alert Center, GIS Vehicle Tracker)",
+      "DEEP INTELLIGENCE INVESTIGATION (Audit-logged forensic workflows)"
+    ],
+    "layers": {
+      "frontend": {
+        "technology": "React 18 + Vite + Vanilla CSS Custom Properties + Socket.IO Client + Leaflet GIS",
+        "port": 3000,
+        "entry": "client/src/main.jsx"
+      },
+      "apiGateway": {
+        "technology": "Node.js + Express + Socket.IO Server + SQLite3 / PostgreSQL",
+        "port": 3001,
+        "entry": "server/index.js",
+        "apiPrefix": "/api/v1"
+      },
+      "aiEngine": {
+        "technology": "Python 3 + FastAPI + Uvicorn + OpenCV + NumPy + YOLO / EasyOCR integration",
+        "port": 8001,
+        "entry": "ai_service/main.py",
+        "contract": {
+          "request": {
+            "cameraId": "string",
+            "frameBase64": "string (optional)",
+            "timestamp": "ISO8601",
+            "zones": "array of polygon points",
+            "anprEnabled": "boolean"
+          },
+          "response": {
+            "status": "string (online | processing)",
+            "detections": "array of { label, confidence, bbox: [x1, y1, x2, y2], trackingId }",
+            "plates": "array of { plateText, normalizedPlate, confidence, bbox, region }",
+            "events": "array of { type, zoneId, severity, message, confidence }"
+          }
+        }
+      },
+      "database": {
+        "engine": "SQLite3 (local dev / embedded) / PostgreSQL (enterprise production)",
+        "file": "server/db/netra.sqlite",
+        "tables": [
+          "users",
+          "cameras",
+          "camera_credentials",
+          "camera_status_events",
+          "detections",
+          "vehicles",
+          "plates",
+          "vehicle_sightings",
+          "vehicle_journeys",
+          "alerts",
+          "watchlist_entries",
+          "restricted_zones",
+          "audit_logs",
+          "settings"
+        ],
+        "indexes": [
+          "idx_plates_number",
+          "idx_sightings_plate",
+          "idx_sightings_camera",
+          "idx_sightings_time",
+          "idx_alerts_severity",
+          "idx_alerts_time",
+          "idx_cameras_status",
+          "idx_audit_logs_timestamp"
+        ]
+      }
+    }
+  },
+  "modules": {
+    "liveMonitor": {
+      "title": "NETRA LIVE MONITOR",
+      "route": "/",
+      "gridModes": ["1x1", "2x2", "3x3", "4x4", "Fullscreen"],
+      "hudElements": [
+        "Camera Identifier",
+        "Location Coordinates & Department",
+        "Network Status Badge (ONLINE / OFFLINE / CONNECTING / ERROR)",
+        "FPS & Latency Meter",
+        "AI Status Tag with Neural Pulse",
+        "Dynamic Bounding Boxes (Person, Vehicle)",
+        "Indian License Plate Banner with Confidence Rating",
+        "Timestamp Overlay (IST / UTC)"
+      ]
+    },
+    "alertCenter": {
+      "title": "NETRA ALERT CENTER",
+      "route": "/alerts",
+      "severityLevels": ["Critical", "High", "Medium", "Low"],
+      "features": [
+        "Real-time Socket.IO alert delivery ('netra_alert')",
+        "Multi-dimensional filtering (Severity, Camera, Date, Plate, Type, Acknowledged)",
+        "Single-click & bulk alert acknowledgement",
+        "Mandatory operator response notes logging",
+        "Forensic evidence dossier viewer with snapshot zoom",
+        "Direct escalation to Vehicle Tracker or Watchlist",
+        "CSV export of incident reports"
+      ]
+    },
+    "vehicleTracker": {
+      "title": "NETRA VEHICLE TRACKER",
+      "route": "/tracking",
+      "features": [
+        "Search by Plate Number, Partial Wildcard, Date Range",
+        "Interactive GIS Map (Leaflet) with customized dark cartography",
+        "Numbered sequential route checkpoints (1 → 2 → 3 → 4)",
+        "Animated route polyline with vector directional arrows",
+        "Detailed sighting dossiers: Camera, Timestamp, Speed/Heading, Crop Snapshot, Confidence",
+        "Side-by-side chronological journey timeline with duration deltas"
+      ]
+    },
+    "intelligenceSearch": {
+      "title": "NETRA INTELLIGENCE SEARCH",
+      "route": "/search",
+      "queryDimensions": [
+        "Plate Number & Partial Substring",
+        "Date and Time Window",
+        "Camera Identifier & Department",
+        "Event Type (Watchlist, Intrusion, Loitering, Density)",
+        "Severity Classification",
+        "Persistent Tracking UUID"
+      ],
+      "quickActions": [
+        "VIEW EVENT",
+        "TRACK VEHICLE",
+        "ENROLL IN WATCHLIST"
+      ]
+    },
+    "watchlistManager": {
+      "title": "NETRA WATCHLIST",
+      "route": "/watchlist",
+      "entities": ["Vehicles", "Persons / POI"],
+      "categories": [
+        "Stolen Vehicle",
+        "Wanted / Fugitive",
+        "Flagged / Surveillance",
+        "Suspicious Pattern",
+        "VIP / White-list"
+      ],
+      "fields": [
+        "Identifier / License Plate",
+        "Category",
+        "Reason / Docket Number",
+        "Severity Level",
+        "Added By (Operator ID)",
+        "Created Date",
+        "Expiry Date",
+        "Active / Inactive Status Toggle"
+      ]
+    },
+    "cameraNetwork": {
+      "title": "NETRA CAMERA NETWORK",
+      "route": "/cameras",
+      "views": ["Table View", "Geospatial Map View"],
+      "columns": [
+        "Camera Name & ID",
+        "Location & Geo-coordinates",
+        "Department / Node",
+        "Protocol & Port (RTSP / HTTP / ONVIF)",
+        "Connection Status",
+        "Live FPS & Resolution",
+        "AI Engine Pipeline State",
+        "Actions (Test, Edit, Toggle Stream, Delete)"
+      ],
+      "addCameraWorkflow": {
+        "fields": ["name", "ip", "port", "rtsp_path", "username", "password", "camera_type", "location", "lat", "lng", "department"],
+        "securityRule": "Camera passwords are encrypted in secure storage and never reflected back in API responses.",
+        "testProtocol": "Mandatory 'TEST CONNECTION' probe via TCP handshake before persistence."
+      }
+    },
+    "cameraLab": {
+      "title": "NETRA CAMERA LAB",
+      "route": "/camera-lab",
+      "purpose": "Hardware diagnostics, stream testing, and ONVIF discovery testbed.",
+      "capabilities": [
+        "Live RTSP / HTTP URL ping and protocol validation",
+        "Low-latency canvas/video preview",
+        "Real-time FPS and latency telemeters",
+        "Stream resolution auto-detection",
+        "Snapshot capture & download utility",
+        "Local network ONVIF WS-Discovery probe",
+        "Interactive engineering log console"
+      ]
+    },
+    "restrictedZonesEditor": {
+      "title": "NETRA RESTRICTED ZONES",
+      "route": "/zones",
+      "capabilities": [
+        "Vector polygon drawing directly over live camera frames",
+        "Multi-point boundary definitions with normalized coordinates",
+        "Per-zone active time windows (e.g., 22:00 - 06:00)",
+        "Configurable trigger severity and event classification",
+        "Real-time Ray-Casting point-in-polygon verification in AI service"
+      ]
+    },
+    "analytics": {
+      "title": "NETRA ANALYTICS",
+      "route": "/analytics",
+      "rule": "Honest visualizations derived directly from database aggregations.",
+      "charts": [
+        "Temporal Incident Frequency (7-day timeline)",
+        "Incident Classification Breakdown (Watchlist vs Intrusion vs Density)",
+        "Peak Activity Hours Distribution (24-hour heat gradient)",
+        "Top Active Node Rankings & Detection Densities",
+        "Camera Network Fleet Uptime and Reliability Matrix"
+      ]
+    },
+    "systemHealth": {
+      "title": "NETRA SYSTEM HEALTH",
+      "route": "/health",
+      "components": [
+        { "name": "Camera Ingestion Gateway", "subsystem": "Stream Proxy & TCP Prober" },
+        { "name": "AI Processing Engine", "subsystem": "Python FastAPI Inference Bridge" },
+        { "name": "API Gateway & Router", "subsystem": "Node.js REST Services" },
+        { "name": "Relational Database", "subsystem": "SQLite3 / PostgreSQL Engine" },
+        { "name": "Real-Time Event Bus", "subsystem": "Socket.IO WebSocket Broker" },
+        { "name": "Snapshot Storage Cache", "subsystem": "Encrypted Local File Vault" },
+        { "name": "Audit Trail Notary", "subsystem": "Tamper-Evident SHA-256 Ledger" }
+      ]
+    },
+    "adminAndSecurity": {
+      "users": {
+        "title": "USER MANAGEMENT",
+        "route": "/users",
+        "roles": [
+          { "role": "ADMIN", "permissions": "Full administrative control, user provisioning, zone editing, credential management" },
+          { "role": "OPERATOR", "permissions": "Live surveillance, alert handling, acknowledgement, vehicle tracking, intelligence search" },
+          { "role": "AUDITOR", "permissions": "Read-only surveillance view, full access to tamper-evident audit logs and compliance reports" }
+        ]
+      },
+      "auditLogs": {
+        "title": "AUDIT LOGS",
+        "route": "/audit-logs",
+        "features": [
+          "Cryptographic SHA-256 record hashing",
+          "Immutable chronological log of all logins, stream tests, zone changes, and alert resolutions",
+          "CSV compliance export"
+        ]
+      },
+      "settings": {
+        "title": "SYSTEM SETTINGS",
+        "route": "/settings",
+        "sections": [
+          "Organization & Deployment Branding",
+          "AI Inference Thresholds (Vehicle, Person, ANPR confidence)",
+          "Camera Polling Frequencies & Health Intervals",
+          "Privacy Masking (Default Face Blurring)",
+          "Data Retention Policies (Alerts & Snapshot auto-pruning)"
+        ]
+      }
+    }
+  },
+  "apiSpecification": {
+    "version": "v1",
+    "baseUrl": "/api/v1",
+    "endpoints": [
+      { "method": "POST", "path": "/auth/login", "desc": "Authenticate user and issue JWT" },
+      { "method": "GET", "path": "/auth/me", "desc": "Validate token and return user profile" },
+      { "method": "GET", "path": "/cameras", "desc": "List cameras with sanitized credentials" },
+      { "method": "POST", "path": "/cameras", "desc": "Create a new camera (requires connection test)" },
+      { "method": "POST", "path": "/cameras/:id/test", "desc": "Perform real TCP/RTSP connectivity probe" },
+      { "method": "POST", "path": "/cameras/discover", "desc": "Probe local subnet for ONVIF devices" },
+      { "method": "GET", "path": "/alerts", "desc": "Fetch filtered incident alerts" },
+      { "method": "POST", "path": "/alerts/:id/acknowledge", "desc": "Acknowledge alert with operator notes" },
+      { "method": "GET", "path": "/tracking/:plate", "desc": "Retrieve chronological cross-camera trajectory" },
+      { "method": "GET", "path": "/watchlist", "desc": "List watchlist entries" },
+      { "method": "POST", "path": "/watchlist", "desc": "Enroll new vehicle or POI" },
+      { "method": "POST", "path": "/search", "desc": "Deep intelligence multi-vector query" },
+      { "method": "GET", "path": "/zones", "desc": "Retrieve polygon geofences by camera" },
+      { "method": "POST", "path": "/zones", "desc": "Persist new restricted boundary polygon" },
+      { "method": "GET", "path": "/analytics", "desc": "Aggregate telemetry metrics" },
+      { "method": "GET", "path": "/health", "desc": "Status matrix of all subsystems" },
+      { "method": "GET", "path": "/audit-logs", "desc": "Fetch cryptographic audit trail" }
+    ]
+  },
+  "realTimeEvents": {
+    "transport": "WebSocket via Socket.IO",
+    "channels": [
+      { "event": "netra_alert", "payload": "Alert payload with severity, camera, plate, and snapshot" },
+      { "event": "netra_vehicle_spot", "payload": "ANPR sighting broadcast across tracking listeners" },
+      { "event": "netra_cam_status", "payload": "Heartbeat telemetry with status, FPS, and latency" },
+      { "event": "netra_system_stats", "payload": "Global active counter updates (cameras online, threats)" }
+    ]
+  },
+  "acceptanceCriteria": {
+    "totalCheckpoints": 64,
+    "status": "VERIFIED_OPERATIONAL",
+    "verifiedCapabilities": [
+      "Real TCP/RTSP handshake verification",
+      "Encrypted camera credential storage without frontend leakage",
+      "Honest AI status indication with offline handling",
+      "Labeling of simulated data with [DEMO MODE]",
+      "Standard Indian number-plate normalization regex",
+      "Persistent cross-camera trajectory tracking with Leaflet map (1 → 2 → 3 → 4)",
+      "Real-time alert dispatch over WebSockets",
+      "Polygon restricted zone geofencing",
+      "Deep multi-vector intelligence search",
+      "Tamper-evident audit logging with SHA-256 chaining",
+      "Graphite & Ivory command-center aesthetic (#08090C / #17181C / #DED8CC)",
+      "Zero dead buttons or broken routes across the platform"
+    ]
+  }
+}
